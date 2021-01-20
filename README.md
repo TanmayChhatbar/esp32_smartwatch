@@ -1,3 +1,4 @@
+# WIP
 # esp32_smartwatch
 DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
 
