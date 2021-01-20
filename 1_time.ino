@@ -2,8 +2,8 @@
   Commands related to fetching and keeping time
 */
 //screen 1 - time
-const char* ssid = "SecureNetworksLink";
-const char* password   = "E701D204";
+const char* ssid = "ssidhere";
+const char* password   = "passwordhere";
 unsigned long timerWiFi = 0;
 
 const char* ntpServer = "time1.google.com";
