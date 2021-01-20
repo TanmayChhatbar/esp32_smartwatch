@@ -26,7 +26,7 @@ void read_Accelerometer() {
   GyY = Wire.read() << 8 | Wire.read();
   GyZ = Wire.read() << 8 | Wire.read();
   filter(15);               //x% weight given to latest reading
-  printInSerial('a');     //g for gyro, a for accelerometer, b for both, t for angles
+//  printInSerial('a');     //g for gyro, a for accelerometer, b for both, t for angles
 
   isActive();           //should watch switch itself off
   updateLast();         //update the 'last' values from accelerometer

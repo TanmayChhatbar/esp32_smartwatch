@@ -31,7 +31,8 @@ TFT_eSPI tft = TFT_eSPI(tftwidth, tftheight);
 //screens related
 int screen = 1, lastscreen = 1;
 #define no_screens 4
-bool backlightState = 1;
+//bool needtoupdate = 1;
+
 //Time related
 //screen 1 - time
 struct tm timeinfo;
@@ -42,11 +43,12 @@ int lasthour = 0, lastsec = 0;
 const int MPU = 0x68;
 RTC_DATA_ATTR int bootCount = 0, stepstoday = 0, laststepstoday = 0, wakereason = -1;
 RTC_DATA_ATTR float calburntoday = 0, lastcalburntoday;
+
 //Battery related
 float vBat;
 int active = 0;
 
-
+//BT logging related
 #define bluetoothLogging
 #ifdef bluetoothLogging
 #include "BluetoothSerial.h"  //Header File for Serial Bluetooth, will be added by default into Arduino
@@ -62,16 +64,10 @@ void setup() {
   Serial.begin(115200);
   printWakeReason();
 
-  pinMode(BUTTON1PIN, INPUT);
-  pinMode(BUTTON2PIN, INPUT);
-  attachInterrupt(BUTTON1PIN, toggleButton1, FALLING);
-  //  attachInterrupt(BUTTON2PIN, toggleButton2_t, FALLING);
+  buttonssetup();
 
   //  delayfunc("tft", 5);
-  tft.begin();
-  tft.setRotation(1); //Landscape
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tftsetup();
 
   // delayfunc("accelerometer", 5);
   Wire.begin();
@@ -79,11 +75,8 @@ void setup() {
 
   //deep sleep
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_35, 0);
-
-  vBat = analogRead(34) * 0.001772;
-  if (vBat < 3.3) {
-    gotosleep(0);
-  }
+  
+  batterycheck();
 
   //  delayfunc("wifi", 5);
   syncWiFi();
@@ -159,5 +152,5 @@ prev:
     esp_deep_sleep_start();
   }
   //save number of steps today. done with RTC_DATA_ATTR
-  //sleep until interrupt by toggleButton2
+  //sleep until interrupt by toggleButton1
 }

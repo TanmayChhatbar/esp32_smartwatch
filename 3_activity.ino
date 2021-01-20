@@ -29,8 +29,8 @@ bool isstep, lastisstep; //has started calc for a step
 void isWalking() {
   GyNet = sqrt(sq(GyX) + sq(GyY) + sq(GyZ));                //normalise in all directions
   AcNet = sqrt(sq(AcX) + sq(AcY) + sq(AcZ));                //normalise in all directions
-  Serial.print("\tAcNet = ");
-  Serial.println(AcNet);
+//  Serial.print("\tAcNet = ");
+//  Serial.print(AcNet);
   if ((AcZ > -15000 and  GyNet < GyMin) or isstep == 1 ) {    //if new step is detected to start, or if step is expected. AcZ value so it doesnt trigger when face up
     isstep = 1;
     if (lastisstep == 0) {                                  //if new step is expected, start timer

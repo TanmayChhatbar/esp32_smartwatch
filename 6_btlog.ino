@@ -18,7 +18,7 @@ void sendBT() {
     if (inbuffer > 47 and inbuffer < 50)
       incoming = inbuffer;
   }
-  Serial.println(btstatus);
+//  Serial.println(btstatus);
   if (incoming == 49) {
     printinBT();
     btstatus = 1; //sending
