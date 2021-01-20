@@ -2,7 +2,9 @@
 # [WIP]esp32_smartwatch
 DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
 
-# Libraries used:
+I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
+
+# Libraries used
   TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
 
   SPI.h - built-in
@@ -13,15 +15,14 @@ DIY smartwatch. Features time(from wifi), step count, calorie count(experimental
 
   Wire.h - built-in
 
-# Hardware used:
+# Hardware used
   TTGO T-Display
 
   GY-521
 
   400mAh LiPo
 
-
-Case STL here: https://www.thingiverse.com/thing:4730124
+  Case STL here: https://www.thingiverse.com/thing:4730124
 
 
 
