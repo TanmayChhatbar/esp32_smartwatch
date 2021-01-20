@@ -3,20 +3,24 @@ DIY smartwatch. Features time(from wifi), step count, calorie count(experimental
 
 Libraries used:
 
-TFT_eSPI.h
+  TFT_eSPI.h
 
-SPI.h
+  SPI.h
 
-WiFi.h
+  WiFi.h
 
-time.h
+  time.h
 
-Wire.h
+  Wire.h
 
 Hardware used:
-TTGO T-Display,
-GY-521,
-400mAh LiPo,
+
+  TTGO T-Display
+
+  GY-521
+
+  400mAh LiPo
+
 
 Case STL here: https://www.thingiverse.com/thing:4730124
 
