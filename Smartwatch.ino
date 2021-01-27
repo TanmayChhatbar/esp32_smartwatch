@@ -1,4 +1,7 @@
-//features to add
+/*
+ * features to add
+ *  music control
+*/
 
 //FreeRTOS reference https://www.youtube.com/watch?v=NEq-L9TNMts
 //Libraries
@@ -24,8 +27,8 @@ TFT_eSPI tft = TFT_eSPI(tftheight, tftwidth);
   1                 Time
   2                 Steps
   3                 Calories
-  4                 Music
-  5                 Accel values
+  4                 DEBUGGING Bluetooth logging
+  5                 DEBUGGING Accel values
 */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
