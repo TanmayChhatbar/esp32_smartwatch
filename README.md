@@ -1,6 +1,6 @@
 
 # [WIP]esp32_smartwatch
-DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
+V0.2 DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
 
 I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
 

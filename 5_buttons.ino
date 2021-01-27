@@ -12,7 +12,7 @@ void buttonssetup(){
   pinMode(BUTTON1PIN, INPUT);
   pinMode(BUTTON2PIN, INPUT);
   attachInterrupt(BUTTON1PIN, toggleButton1, FALLING);
-  //  attachInterrupt(BUTTON2PIN, toggleButton2_t, FALLING);    //not based on interrupt anymore
+  //  attachInterrupt(BUTTON2PIN, toggleButton2_t, FALLING);    //interrupt doesnt work well with deepsleep
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

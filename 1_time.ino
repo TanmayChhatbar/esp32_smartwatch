@@ -2,8 +2,7 @@
   Commands related to fetching and keeping time
 */
 //screen 1 - time
-const char* ssid = "ssidhere";
-const char* password   = "passwordhere";
+#include <credentials.h>
 unsigned long timerWiFi = 0;
 
 const char* ntpServer = "time1.google.com";
@@ -16,27 +15,27 @@ const int   daylightOffset_sec = 0;
 void syncWiFi() {       //connects to WiFi, and fetches time
 y:
   Serial.printf("Connecting to %s", ssid);
-  tft.setFreeFont(&FreeMono9pt7b);
-  tft.setTextDatum(MC_DATUM);
-  tft.drawString("Connecting to ", 120, 20);
-  tft.drawString(ssid, 120, 40);
+  //  tft.setFreeFont(&FreeMono9pt7b);
+  tft.setTextDatum(TL_DATUM);
+  tft.drawString("Connecting to ", 0, 0, 4);
+  tft.drawString(ssid, 0, 30, 4);
   WiFi.begin(ssid, password);
   timerWiFi = millis();
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(200);
     Serial.print(".");
     if (millis() - timerWiFi > 10000)
     {
       goto y;
     }
   }
-  String ip = (String)WiFi.localIP()[0] + "." + (String)WiFi.localIP()[1] + "." + (String)WiFi.localIP()[2] + "." + (String)WiFi.localIP()[3];
-  tft.drawString(ip, 120, 60);
+  String ip = "IP: " + (String)WiFi.localIP()[0] + "." + (String)WiFi.localIP()[1] + "." + (String)WiFi.localIP()[2] + "." + (String)WiFi.localIP()[3];
+  tft.drawString(ip, 0, 60, 4);
   Serial.println("");
   Serial.print("WiFi Connected\nIP Address: ");
   Serial.println(WiFi.localIP());
-  delay(1000);
-  
+  delay(50);
+
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   while (!getLocalTime(&timeinfo)) {
     delay(100);
@@ -45,8 +44,7 @@ y:
 
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
-  tft.fillScreen(TFT_BLACK);
-  delay(100);
+  delay(50);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

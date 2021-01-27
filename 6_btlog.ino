@@ -6,7 +6,8 @@ int inbuffer;
 void btsetup() {
   ESP_BT.begin("ESP32_DataLog"); //Name of your Bluetooth Signal
   Serial.println("Bluetooth Device is Ready to Pair");
-  tft.drawString("Ready to Pair", 10, 10, 4);
+  tft.drawString("Ready to Pair", 0, 90, 4);
+  delay(100);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,17 +37,19 @@ void printinBT() {
     ESP_BT.print(AcY);
     ESP_BT.print(",");
     ESP_BT.print(AcZ);
+    ESP_BT.print(", ");
+    ESP_BT.print(AcNet);
     ESP_BT.print(",");
   }
-  {
-    ESP_BT.print(GyX);
-    ESP_BT.print(",");
-    ESP_BT.print(GyY);
-    ESP_BT.print(",");
-    ESP_BT.println(GyZ);
-  }
-  GyNet = sqrt(sq(GyX) + sq(GyY) + sq(GyZ));
+//  {
+//    ESP_BT.print(GyX);
+//    ESP_BT.print(",");
+//    ESP_BT.print(GyY);
+//    ESP_BT.print(",");
+//    ESP_BT.println(GyZ);
+//  }
   Serial.println(GyNet);
+    ESP_BT.println();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -4,12 +4,23 @@
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ, TmP;
 int16_t lastAcX, lastAcY, lastAcZ, lastGyX, lastGyY, lastGyZ;
+int16_t sumAcXY, lastsumAcXY;
 int32_t GyNet, GyNetMax = 0;
 int32_t AcNet, AcNetMax = 0;
 unsigned long timer = 0, activetimer = 0;
-float thx, thy, thz;
-int noise = 100, initialnoise = 200;
+int noise = 100, initialnoise = 150;
 int awake = 1;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TFTPrintAccel() {
+  tft.setTextPadding(20);
+  tft.setTextDatum(TL_DATUM);
+  tft.drawString(String(AcNet), 10, 10, 4);
+  tftupdate = 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +37,11 @@ void read_Accelerometer() {
   GyY = Wire.read() << 8 | Wire.read();
   GyZ = Wire.read() << 8 | Wire.read();
   filter(15);               //x% weight given to latest reading
-//  printInSerial('a');     //g for gyro, a for accelerometer, b for both, t for angles
+
+  GyNet = sqrt(sq(GyX) + sq(GyY) + sq(GyZ));                //normalise in all directions
+  AcNet = sqrt(sq(AcX) + sq(AcY) + sq(AcZ));                //normalise in all directions
+  sumAcXY = AcX + AcY;
+  printInSerial('a');     //g for gyro, a for accelerometer, b for both, t for angles
 
   isActive();           //should watch switch itself off
   updateLast();         //update the 'last' values from accelerometer
@@ -35,9 +50,9 @@ void read_Accelerometer() {
     backlight(1);
   else if (active == 0 or (AcZ > -13500 and AcY < 600))
     backlight(0);
-
+    
+//  isRunning();
   isWalking();
-  Serial.println();
 #ifdef bluetoothLogging
   sendBT();
 #endif
@@ -52,12 +67,15 @@ void printInSerial(char sel) {
     Serial.print("aX = "); Serial.print(AcX);
     Serial.print("\taY = "); Serial.print(AcY);
     Serial.print("\taZ = "); Serial.print(AcZ);
+    Serial.print("\tAcNet = "); Serial.print(AcNet);
   }
   if (sel == 'g' or sel == 'b') {
     Serial.print("gX= "); Serial.print(GyX);
     Serial.print("\tgY= "); Serial.print(GyY);
     Serial.print("\tgZ= "); Serial.print(GyZ);
   }
+  if (sel == 'a' or sel == 'g' or sel == 'b')
+    Serial.println();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

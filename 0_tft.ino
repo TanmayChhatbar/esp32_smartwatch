@@ -4,6 +4,8 @@
 bool tftupdate = 1;
 bool needtoupdate = 1;
 bool backlightState = 1;
+String timespent;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +23,7 @@ void updatescreen() {
   if (screen != lastscreen or needtoupdate == 1) {
     tft.fillScreen(TFT_BLACK);        //if the screen needs to be changed, write the screen all black
   }
-  if (needtoupdate == 1){
+  if (needtoupdate == 1) {
     needtoupdate = 0;
     tftupdate = 1;
   }
@@ -50,6 +52,9 @@ void updatescreen() {
       TFTPrintBT();
       break;
 #endif
+    case 5:
+      TFTPrintAccel();
+      break;
   }
   if (screen > 0) {
     batterydraw();
@@ -72,13 +77,17 @@ void TFTPrintTime(int ret) {              //print the time on the display
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+String minspent, secspent;
 void TFTPrintSteps() {              //print the steps on the display
   if (screen != lastscreen or stepstoday != laststepstoday or tftupdate == 1) {
     tft.setTextDatum(TL_DATUM);
     tft.setTextPadding(20);
     tft.drawString("Steps today", 0, 0, 4);   //#4 RLE font
     tft.drawString((String)stepstoday, 0, 30, 8);   //#8 RLE font
+    tft.setTextDatum(BL_DATUM);
+    timespent = ((millispent / 60000) >= 1) ? (String(millispent / 60000) + "min, ") : "";
+    timespent += String((millispent / 1000) % 60) + "sec";
+    tft.drawString(timespent, 0, tftheight, 4);   //#8 RLE font
     laststepstoday = stepstoday;
     tftupdate = 0;
   }
@@ -109,8 +118,6 @@ void backlight(bool state) {          //call if want to change state of backligh
   else screen = lastscreen;
   tftupdate = 1;
 }
-
-
 
 //void TFTPrint3() {
 //  tft.setTextPadding(20);
