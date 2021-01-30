@@ -29,7 +29,7 @@ void toggleButton1() {
       screen = 1;
     Serial.print("Screen ");
     Serial.println(screen);
-    tft.fillScreen(TFT_BLACK);
+    tft.fillScreen(backgroundColor);
     active = 1;
     tftupdate = 1;
     needtoupdate = 1;

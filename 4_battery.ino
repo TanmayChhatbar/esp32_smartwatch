@@ -23,12 +23,17 @@ int color, divdraw;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void batterycheck(){
+
+void batterycheck() {
   vBat = analogRead(34) * 0.001772;
   if (vBat < 3.3) {
     gotosleep(0);
   }
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void batterydraw() {            //TODO
   vBat = analogRead(34) * 0.001772;
   if (vBat < 3.3)
@@ -43,18 +48,20 @@ void batterydraw() {            //TODO
     divdraw = 3;
   else divdraw = 4;
 
-  if (charging)
-    color = TFT_GREEN;                           //test charging color change
-  else
-    color = TFT_WHITE;
+  //  if (charging)
+  //    color = TFT_GREEN;                           //test charging color change
+  //  else
+  //    color = batteryColor;
+  color = batteryColor;
 
   tft.drawRect(tlpointx, tlpointy, framewidth, totalheight, color);      //main frame
   tft.fillRect(boopx, boopy, boopwidth, boopheight, color);     //boop
-  tft.fillRect(tlpointx + 1, tlpointy + 1, framewidth - 2, totalheight - 2, TFT_BLACK);      //reset to 0 battery
+  tft.fillRect(tlpointx + 1, tlpointy + 1, framewidth - 2, totalheight - 2, backgroundColor);      //reset to 0 battery
   for ( int i = 0; i < divdraw; i++) {
     tft.fillRect(tlpointx + 2 + divoffset * i, tlpointy + 2, divisionwidth , totalheight - 4, color);      //smaller rectangles inside frame
   }
+  //test
+  //  tft.setTextDatum(MC_DATUM);
+  //  tft.drawString(String(String(vBat) + "V"), (tftwidth - (framewidth / 2 + clearance + boopheight), (clearance + (totalheight / 2)), 2);
 
-  tft.setTextDatum(BR_DATUM);
-  tft.drawString(String(vBat), 240, 135, 2);            //test
 }

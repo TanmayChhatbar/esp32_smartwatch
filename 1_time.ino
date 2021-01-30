@@ -1,7 +1,7 @@
 /*
   Commands related to fetching and keeping time
 */
-//screen 1 - time
+
 #include <credentials.h>
 unsigned long timerWiFi = 0;
 
@@ -29,7 +29,9 @@ y:
       goto y;
     }
   }
-  String ip = "IP: " + (String)WiFi.localIP()[0] + "." + (String)WiFi.localIP()[1] + "." + (String)WiFi.localIP()[2] + "." + (String)WiFi.localIP()[3];
+  String ip = "IP: " + (String)WiFi.localIP()[0] + "." + (String)WiFi.localIP()[1];
+  ip += "." + (String)WiFi.localIP()[2] + "." + (String)WiFi.localIP()[3];
+  
   tft.drawString(ip, 0, 60, 4);
   Serial.println("");
   Serial.print("WiFi Connected\nIP Address: ");

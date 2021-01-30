@@ -1,13 +1,12 @@
-int inbuffer;
+#ifdef bluetoothLogging
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int inbuffer;
 
 void btsetup() {
   ESP_BT.begin("ESP32_DataLog"); //Name of your Bluetooth Signal
   Serial.println("Bluetooth Device is Ready to Pair");
-  tft.drawString("Ready to Pair", 0, 90, 4);
-  delay(100);
+  tft.drawString("BT Ready to Pair", 0, 90, 4);
+  delay(250);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +18,7 @@ void sendBT() {
     if (inbuffer > 47 and inbuffer < 50)
       incoming = inbuffer;
   }
-//  Serial.println(btstatus);
+  //  Serial.println(btstatus);
   if (incoming == 49) {
     printinBT();
     btstatus = 1; //sending
@@ -31,7 +30,7 @@ void sendBT() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void printinBT() {
-  {
+  { //acceleration values
     ESP_BT.print(AcX);
     ESP_BT.print(",");
     ESP_BT.print(AcY);
@@ -41,35 +40,50 @@ void printinBT() {
     ESP_BT.print(AcNet);
     ESP_BT.print(",");
   }
-//  {
-//    ESP_BT.print(GyX);
-//    ESP_BT.print(",");
-//    ESP_BT.print(GyY);
-//    ESP_BT.print(",");
-//    ESP_BT.println(GyZ);
-//  }
-  Serial.println(GyNet);
-    ESP_BT.println();
+  { //gyro values
+    ESP_BT.print(GyX);
+    ESP_BT.print(",");
+    ESP_BT.print(GyY);
+    ESP_BT.print(",");
+    ESP_BT.println(GyZ);
+  }
+  //  { //steps
+  //    ESP_BT.print(stepstoday);
+  //    ESP_BT.print(",");
+  //  }
+  { //step change
+    if (laststepstoday != stepstoday)
+      ESP_BT.print("1");
+    else ESP_BT.print("0");
+    ESP_BT.print(",");
+  }
+
+  ESP_BT.println();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TFTPrintBT() {
-  tft.drawString("BT Status", 120, 0, 4);
-  if (btstatus != lastbtstatus or tftupdate == 1){
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextPadding(20);
+
+  tft.drawString("BT Status", 10, 10, 4);
+  if (btstatus != lastbtstatus or tftupdate == 1) {
     lastbtstatus = btstatus;
     switch (btstatus) {
       case 0:
-        tft.drawString("Stopped", 120, 70, 4);
+        tft.drawString("Stopped", 10, 70, 4);
         break;
       case 1:
-        tft.drawString("Sending", 120, 70, 4);
+        tft.drawString("Sending", 10, 70, 4);
         break;
       case 2:
-        tft.drawString("To pair", 120, 60, 4);
+        tft.drawString("To pair", 10, 60, 4);
         break;
     }
     tftupdate = 0;
   }
 }
+
+#endif

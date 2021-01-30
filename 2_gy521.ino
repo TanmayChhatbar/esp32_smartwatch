@@ -1,5 +1,6 @@
 /*
   Commands related to the accelerometer
+
 */
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ, TmP;
@@ -8,18 +9,48 @@ int16_t sumAcXY, lastsumAcXY;
 int32_t GyNet, GyNetMax = 0;
 int32_t AcNet, AcNetMax = 0;
 unsigned long timer = 0, activetimer = 0;
-int noise = 100, initialnoise = 150;
+int noise = 100;
 int awake = 1;
+String temperature;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef DebuggingScreens
+#define valx 100
+#define vertspacing 30
+
+//If values show 0, thats probably because of the module being in sleep mode. Move the watch to get it out of sleep.
 
 void TFTPrintAccel() {
-  tft.setTextPadding(20);
+  tft.setTextPadding(40);
   tft.setTextDatum(TL_DATUM);
-  tft.drawString(String(AcNet), 10, 10, 4);
+  tft.drawString(String("AcX="), 10, 10, 4);
+  tft.drawString(String(String(AcX) + "     "), valx, 10, 4);
+  tft.drawString(String("AcY="), 10, 10 + (vertspacing * 1), 4);
+  tft.drawString(String(String(AcY) + "     "), valx, 10 + (vertspacing * 1), 4);
+  tft.drawString(String("AcZ="), 10, 10 + (vertspacing * 2), 4);
+  tft.drawString(String(String(AcZ) + "     "), valx, 10 + (vertspacing * 2), 4);
+  tft.drawString(String("AcNet="), 10, 10 + (vertspacing * 3), 4);
+  tft.drawString(String(String(AcNet) + "     "), valx, 10 + (vertspacing * 3), 4);
   tftupdate = 1;
 }
+
+void TFTPrintGyro() {
+  tft.setTextPadding(40);
+  tft.setTextDatum(TL_DATUM);
+  tft.drawString(String("GyX="), 10, 10, 4);
+  tft.drawString(String(String(GyX) + "     "), valx, 10, 4);
+  tft.drawString(String("GyY="), 10, 10 + (vertspacing * 1), 4);
+  tft.drawString(String(String(GyY) + "     "), valx, 10 + (vertspacing * 1), 4);
+  tft.drawString(String("GyZ="), 10, 10 + (vertspacing * 2), 4);
+  tft.drawString(String(String(GyZ) + "     "), valx, 10 + (vertspacing * 2), 4);
+  tft.drawString(String("GyNet="), 10, 10 + (vertspacing * 3), 4);
+  tft.drawString(String(String(GyNet) + "     "), valx, 10 + (vertspacing * 3), 4);
+  tftupdate = 1;
+}
+
+#endif
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,12 +77,12 @@ void read_Accelerometer() {
   isActive();           //should watch switch itself off
   updateLast();         //update the 'last' values from accelerometer
 
-  if ((AcZ < -13500 and AcY > 600) and active == 1)    //switch on the display if someone is looking at it
+  if (((AcZ < -13500 and AcY > 600) and active == 1) or screen >= 4)    //switch on the display if someone is looking at it
     backlight(1);
   else if (active == 0 or (AcZ > -13500 and AcY < 600))
     backlight(0);
-    
-//  isRunning();
+
+  //  isRunning();
   isWalking();
 #ifdef bluetoothLogging
   sendBT();
@@ -61,6 +92,15 @@ void read_Accelerometer() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void TFTPrintTemperature() {
+  tft.setTextDatum(BR_DATUM);
+  tft.setTextColor(textColor, backgroundColor);
+  temperature = String((TmP) / 340 + 36.53) + "^C";
+  tft.drawString(String(temperature), tftwidth, tftheight, 2);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void printInSerial(char sel) {
   if (sel == 'a' or sel == 'b') {
@@ -87,7 +127,7 @@ void isActive() {
       active = 0;
       accelPowerMode(0);
     }
-    if (millis() - activetimer > (inactivitytimeout * 60 * 1000))
+    if (millis() - activetimer > (inactivitytimeout))
       gotosleep(1);
   }
   else {

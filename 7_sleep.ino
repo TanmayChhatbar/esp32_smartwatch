@@ -2,7 +2,7 @@
   Commands related to power management and sleep
 */
 
-void printWakeReason() {
+void SerialprintWakeReason() {
   switch (wakereason) {
     case -1:
       Serial.println("First boot.");
@@ -23,7 +23,7 @@ void printWakeReason() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void gotosleep(int reason) {     //1 is inactivity, 0 is low battery, 2 is user off
-  tft.fillScreen(TFT_BLACK);
+  tft.fillScreen(backgroundColor);
   tft.setTextDatum(MC_DATUM);
   wakereason = reason;
   switch (reason) {
