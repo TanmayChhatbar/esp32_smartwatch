@@ -2,7 +2,11 @@
   Commands related to fetching and keeping time
 */
 
-#include <credentials.h>
+#include <credentials.h>    //I recommend making a '*sketchbook_location*/libraries/credentials/credentials.h' so you can share your network details across all sketches with just one line
+
+//#define ssid "YOUR_SSID"
+//#define password "YOUR_PASSWORD"
+
 unsigned long timerWiFi = 0;
 
 const char* ntpServer = "time1.google.com";

@@ -4,25 +4,28 @@ DIY smartwatch. Features time(from wifi), step count, calorie count(experimental
 
 I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
 
-## Variables you might want to set
+# User Setup
+### Variables you will want to set
 	in Smartwatch.ino
-		define 	bluetoothLogging
+		!define	bluetoothLogging
 			DebuggingScreens
 	in time.ino
-		define 	credentials
+		define 	(WiFi)credentials
 			gmtOffset_sec
 			daylightOffset_sec
+			
 ### Variables you can play around with
 	in tft.ino
-		define screen colors
+		define 	screen colors
 	in battery.ino
-		define battery sizes
+		define 	battery sizes
 		
 	
 
 # Changelog
 v0.3 (Current)
-	Rewrote walking code
+
+	Rewrote walking code (around 90% accuracy)
 	n-step Debounce for movement
 	
 v0.22
