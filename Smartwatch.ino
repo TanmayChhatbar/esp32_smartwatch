@@ -18,6 +18,7 @@
 
 
     To do:
+    Running code test
     Steps counter threshold - check variable stepsThreshold
     OTA - keep WiFi on for a while after boot
     Check if battery is charging
