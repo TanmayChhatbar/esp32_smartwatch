@@ -1,6 +1,0 @@
-v0.21 (Current)
-Easy toggle for bluetooth logging and debugging screens
-Automatic screen detection
-Fix in walking
-
-Changelog being maintained since v0.2
