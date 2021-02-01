@@ -24,27 +24,27 @@ v0.21
 Changelog being maintained since v0.2
 
 # Libraries used
-  TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
+  	TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
 
-  SPI.h - built-in
+  	SPI.h - built-in
 
-  WiFi.h - with esp32
+  	WiFi.h - with esp32
  
-  time.h - built-in 
+  	time.h - built-in 
 
-  Wire.h - built-in
+  	Wire.h - built-in
 
 # Hardware used
-  TTGO T-Display
+  	TTGO T-Display
 
-  GY-521
+  	GY-521
 
-  400mAh LiPo
+  	400mAh LiPo
 
-  Case STL here: https://www.thingiverse.com/thing:4730124
+  	Case STL here: https://www.thingiverse.com/thing:4730124
 
 
 
 # Credit
-Must credit all those who have written those extensive libraries as part of the effort in this project. Without them, I couldn't have reached so far.
+	Must credit all those who have written those extensive libraries as part of the effort in this project. Without them, I couldn't have reached so far.
 
