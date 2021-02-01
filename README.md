@@ -8,44 +8,30 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 v0.22 (Current)
 	
 	Better screen switching
-	
 	Fix in walking time
-	
 	Updated instructions in flashing and ToDo list
-	
 	Code cleanup
 		
 v0.21
 	
-	Easy toggle for bluetooth logging and debugging screens
-	
-	Automatic screen detection
-	
+	Easy toggle for bluetooth logging and debugging screens	
+	Automatic screen detection	
 	Fix in walking
 
 Changelog being maintained since v0.2
 
 # Libraries used
   	TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
-
   	SPI.h - built-in
-
-  	WiFi.h - with esp32
- 
-  	time.h - built-in 
-
+  	WiFi.h - with esp32 
+  	time.h - built-in
   	Wire.h - built-in
 
 # Hardware used
   	TTGO T-Display
-
   	GY-521
-
   	400mAh LiPo
-
   	Case STL here: https://www.thingiverse.com/thing:4730124
-
-
 
 # Credit
 	Must credit all those who have written those extensive libraries as part of the effort in this project.
