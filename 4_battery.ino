@@ -1,16 +1,16 @@
 /*
   Commands related to the battery
 */
-//variables to set
-#define clearance 0    //distance from top right corner on both x and y
-#define totalheight 8
-#define boopheight 4   //height of the boop in the end, try to keep so totalheight - boopheight is even
-#define boopwidth 2
-#define divisions 4
-#define divisionwidth 3
+//Variables to set in px
+#define clearance 0     //distance from top right corner on both x and y
+#define totalheight 8   //total height of the battery
+#define boopheight 4    //height of the boop in the end, try to keep so totalheight - boopheight is even
+#define boopwidth 2     //width of the anode(?)
+#define divisions 4     //number of divisions you want in the battery
+#define divisionwidth 3 //width of each division
 
-//variables to not touch
-#define totalwidth (2 + boopwidth + (divisions + 1) + divisions * divisionwidth)
+//Do not need to touch
+#define totalwidth (2 + boopwidth + (divisions + 1) + divisions * divisionwidth)  //can calculate total width with this
 #define framewidth (totalwidth - boopwidth)     //frame width
 #define tlpointx (240 - clearance - totalwidth)
 #define tlpointy (clearance)
@@ -36,7 +36,7 @@ void batterycheck() {
 
 void batterydraw() {            //TODO
   vBat = analogRead(34) * 0.001772;
-  if (vBat < 3.3)
+  if (vBat < 3.3)                                                                            
     gotosleep(0);
   else if (vBat < 3.4)
     divdraw = 0;

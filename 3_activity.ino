@@ -26,6 +26,9 @@
 #define maxStepTime 500 //milliseconds, prev 1000
 #define minStepTime 125     //prev 300
 
+#define stepsThreshold 10 //TODO
+#define stepsThresholdTime (stepsThreshold*1.5) * maxStepTime * 2
+
 unsigned int steptimer, stepDuration;     //timer is overall, duration is millis - timer
 bool isstep, lastisstep, isrunstep, lastisrunstep; //has started calc for a step
 
@@ -34,10 +37,10 @@ bool isstep, lastisstep, isrunstep, lastisrunstep; //has started calc for a step
 
 void isRunning() {
   //if sum has reached minima, and is below -1000, probably running
-  if ((AcZ > -15000 and  sumAcXY < -10000 and sumAcXY > lastsumAcXY) or isrunstep == 1 ) {   
+  if ((AcZ > -15000 and  sumAcXY < -10000 and sumAcXY > lastsumAcXY) or isrunstep) {
     //if new step is detected to start, or if step is expected. AcZ value so it doesnt trigger when face up
     isrunstep = 1;
-    if (lastisrunstep == 0) {                                  //if new step is expected, start timer
+    if (!lastisrunstep) {                                  //if new step is expected, start timer
       steptimer = millis();
     }
     if (AcNet > AcNetMax) {
@@ -46,7 +49,7 @@ void isRunning() {
     stepDuration = millis() - steptimer;
 
     if (stepDuration < maxStepTime) {                       //if max time per step hasnt elapsed
-      if ((AcNet > AcMax and AcNet < AcNetMax) and stepDuration > minStepTime ) { 
+      if ((AcNet > AcMax and AcNet < AcNetMax) and stepDuration > minStepTime ) {
         //if between max and min step times, gynet exceeds gymax, increment steps
         if (AcNetMax < 20000)
           calburntoday += .066 * stepDuration / 1000;
@@ -54,7 +57,7 @@ void isRunning() {
           calburntoday += .183 * stepDuration / 1000;
         else calburntoday += .333 * stepDuration / 1000;
 
-        millispent += stepDuration;
+        millispent += 2 * stepDuration;                       //assuming both half-steps take the same time
         stepstoday++;
         isrunstep = 0;                                         //incremented, wait for
       }
@@ -73,10 +76,10 @@ void isRunning() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void isWalking() {
-  if (isrunstep == 0 and ((AcZ > -15000 and  GyNet < GyMin) or isstep == 1 )) {   
+  if (!isrunstep and ((AcZ > -15000 and  GyNet < GyMin) or isstep )) {
     //if new step is detected to start, or if step is expected. AcZ value so it doesnt trigger when face up
     isstep = 1;
-    if (lastisstep == 0) {                                  
+    if (!lastisstep) {
       //if new step is expected, start timer
       steptimer = millis();
     }
@@ -86,7 +89,7 @@ void isWalking() {
     stepDuration = millis() - steptimer;
 
     if (stepDuration < maxStepTime) {                       //if max time per step hasnt elapsed
-      if ((GyNet > GyMax and GyNet < GyNetMax) and stepDuration > minStepTime ) { 
+      if ((GyNet > GyMax and GyNet < GyNetMax) and stepDuration > minStepTime ) {
         //if between max and min step times, gynet exceeds gymax, increment steps
 
         Serial.println(GyNetMax);
@@ -108,5 +111,37 @@ void isWalking() {
       GyNetMax = 0;
     }
     lastisstep = isstep;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+String minspent, secspent;
+void TFTPrintSteps() {                                              //print the steps on the display
+  if (screen != lastscreen or stepstoday != laststepstoday or tftupdate) {
+    tft.setTextDatum(TL_DATUM);
+    tft.setTextPadding(20);
+    tft.drawString("Steps today", 0, 0, 4);                         //#4 RLE font
+    tft.drawString((String)stepstoday, 0, 30, 8);                   //#8 RLE font
+    tft.setTextDatum(BL_DATUM);
+    timespent = ((millispent / 60000) >= 1) ? (String(millispent / 60000) + "min, ") : "";
+    timespent += String((millispent / 1000) % 60) + "sec";
+    tft.drawString(timespent, 0, tftheight, 4);
+    laststepstoday = stepstoday;
+    tftupdate = 0;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TFTPrintCalories() {              //print the calories on the display
+  if (screen != lastscreen or calburntoday != lastcalburntoday or tftupdate) {
+    tft.setTextDatum(TL_DATUM);
+    tft.setTextPadding(20);
+    tft.drawString("Calories today", 0, 10, 4);   //#4 RLE font
+    tft.drawString((String)calburntoday, 0, 40, 4);   //#8 RLE font
+    tftupdate = 0;
   }
 }

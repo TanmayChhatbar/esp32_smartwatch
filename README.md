@@ -1,8 +1,22 @@
 
 # [WIP]esp32_smartwatch
-V0.2 DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
+DIY smartwatch. Features time(from wifi), step count, calorie count(experimental) so far. 
 
 I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
+
+# Changelog
+v0.22 (Current)
+	Better screen switching
+	Fix in walking time
+	Updated instructions in flashing and ToDo list
+	Code cleanup
+		
+v0.21
+	Easy toggle for bluetooth logging and debugging screens
+	Automatic screen detection
+	Fix in walking
+
+Changelog being maintained since v0.2
 
 # Libraries used
   TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
@@ -28,3 +42,4 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 
 # Credit
 Must credit all those who have written those extensive libraries as part of the effort in this project. Without them, I couldn't have reached so far.
+

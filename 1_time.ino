@@ -15,7 +15,6 @@ const int   daylightOffset_sec = 0;
 void syncWiFi() {       //connects to WiFi, and fetches time
 y:
   Serial.printf("Connecting to %s", ssid);
-  //  tft.setFreeFont(&FreeMono9pt7b);
   tft.setTextDatum(TL_DATUM);
   tft.drawString("Connecting to ", 0, 0, 4);
   tft.drawString(ssid, 0, 30, 4);
@@ -31,7 +30,7 @@ y:
   }
   String ip = "IP: " + (String)WiFi.localIP()[0] + "." + (String)WiFi.localIP()[1];
   ip += "." + (String)WiFi.localIP()[2] + "." + (String)WiFi.localIP()[3];
-  
+
   tft.drawString(ip, 0, 60, 4);
   Serial.println("");
   Serial.print("WiFi Connected\nIP Address: ");
@@ -54,11 +53,34 @@ y:
 
 int serialPrintLocalTime() {          //serial print current time, returns 1 if error
   if (!getLocalTime(&timeinfo)) {
-    Serial.println("Failed to obtain time");////////////////
-    TFTPrintTime(1);
+    Serial.println("Failed to obtain time");
+    TFTPrintTime();
     syncWiFi();
     return 1;
   }
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
   return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TFTPrintTime() {               //print the time on the display
+  getLocalTime(&timeinfo);          //update time
+  if (timeinfo.tm_sec != lastsec or tftupdate) {       //update part of screen every second
+    lastsec = timeinfo.tm_sec;
+
+    tft.setTextDatum(MC_DATUM);
+    tft.setTextPadding(240);
+    tft.setTextColor(timeColor, backgroundColor);
+
+    //only hour and minute, with blinking colon
+    String timeprint = timeinfo.tm_hour % 12 == 0 ? "12" : (timeinfo.tm_hour % 12 < 10 ? "0" : "") + (String)(timeinfo.tm_hour % 12);
+    timeprint += (timeinfo.tm_sec % 2 == 1) ? ":" : " ";
+    timeprint += (timeinfo.tm_min < 10 ? "0" : "") + (String)timeinfo.tm_min;
+
+    tft.drawString(timeprint, 120, 60, 7);  //7 is digital font from RLE fonts
+    tftupdate = 0;
+    TFTPrintTemperature();    //in gy521.ino file
+  }
 }

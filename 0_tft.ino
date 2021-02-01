@@ -9,8 +9,8 @@
 
 //set correct screen numbers based on bluetooth/debugging screen definitions
 
-bool tftupdate = 1;
-bool needtoupdate = 1;
+bool tftupdate = 1;         //update without refreshing entire screen
+bool tftfullupdate = 1;     //draw entire screen as background before updating
 bool backlightState = 1;
 String timespent;
 
@@ -28,31 +28,30 @@ void tftsetup() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void updatescreen() {
-  if (screen != lastscreen or needtoupdate == 1) {
+  if (screen != lastscreen or tftfullupdate) {
     tft.fillScreen(backgroundColor);        //if the screen needs to be changed, write the screen all black
     tft.setTextColor(textColor, backgroundColor);
+    active = 1;
+    activetimer = millis();
   }
-  if (needtoupdate == 1) {
-    needtoupdate = 0;
+  if (tftfullupdate) {
+    tftfullupdate = 0;
     tftupdate = 1;
   }
   switch (screen) {                   //update display loop
     case -1:                          //-1 indicates display off, dont refresh screen
+      tftupdate = 0;
       break;
 
-    case p1:                           //show time
-      getLocalTime(&timeinfo);        //update time
-      if (timeinfo.tm_sec != lastsec or tftupdate == 1) {
-        lastsec = timeinfo.tm_sec;
-        TFTPrintTime(0);              //update part of screen every second
-      }
+    case p1:                          //show time
+      TFTPrintTime();                 //update part of screen every second
       break;
 
-    case p2:                           //show steps
+    case p2:                          //show steps
       TFTPrintSteps();
       break;
 
-    case p3:                           //calories
+    case p3:                          //calories
       TFTPrintCalories();
       break;
 
@@ -83,62 +82,14 @@ void updatescreen() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TFTPrintTime(int ret) {              //print the time on the display
-  tft.setTextDatum(MC_DATUM);
-  tft.setTextPadding(240);
-  tft.setTextColor(timeColor, backgroundColor);
-
-  //only hour and minute, with blinking colon
-  String timeprint = timeinfo.tm_hour % 12 == 0 ? "12" : (timeinfo.tm_hour % 12 < 10 ? "0" : "") + (String)(timeinfo.tm_hour % 12);
-  timeprint += (timeinfo.tm_sec % 2 == 1) ? ":" : " ";
-  timeprint += (timeinfo.tm_min < 10 ? "0" : "") + (String)timeinfo.tm_min;
-
-  tft.drawString(timeprint, 120, 60, 7);  //7 is digital font from RLE fonts
-  tftupdate = 0;
-  TFTPrintTemperature();    //in gy521.ino file
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-String minspent, secspent;
-void TFTPrintSteps() {              //print the steps on the display
-  if (screen != lastscreen or stepstoday != laststepstoday or tftupdate == 1) {
-    tft.setTextDatum(TL_DATUM);
-    tft.setTextPadding(20);
-    tft.drawString("Steps today", 0, 0, 4);   //#4 RLE font
-    tft.drawString((String)stepstoday, 0, 30, 8);   //#8 RLE font
-    tft.setTextDatum(BL_DATUM);
-    timespent = ((millispent / 60000) >= 1) ? (String(millispent / 60000) + "min, ") : "";
-    timespent += String((millispent / 1000) % 60) + "sec";
-    tft.drawString(timespent, 0, tftheight, 4);   //#8 RLE font
-    laststepstoday = stepstoday;
-    tftupdate = 0;
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TFTPrintCalories() {              //print the calories on the display
-  if (screen != lastscreen or calburntoday != lastcalburntoday or tftupdate == 1) {
-    tft.setTextDatum(TL_DATUM);
-    tft.setTextPadding(20);
-    tft.drawString("Calories today", 0, 10, 4);   //#4 RLE font
-    tft.drawString((String)calburntoday, 0, 40, 4);   //#8 RLE font
-    tftupdate = 0;
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void backlight(bool state) {          //call if want to change state of backlight
-  backlightState = state;
+  if (backlightState != state) {
+    tftupdate = 1;
+    backlightState = state;
+  }
   digitalWrite(TFT_BL, state);
-  if (state == 0) {
+  if (!state) {
     screen = -1;
   }
   else screen = lastscreen;
-  tftupdate = 1;
 }

@@ -1,14 +1,15 @@
-//fallback
+
 /*
+//fallback
   void isWalking() {
   GyNet = sqrt(sq(GyX) + sq(GyY) + sq(GyZ));                //normalise in all directions
   AcNet = sqrt(sq(AcX) + sq(AcY) + sq(AcZ));                //normalise in all directions
   Serial.print("\tAcNet = ");
   Serial.println(AcNet);
-  if ((AcZ > -15000 and (AcNet < AcMin or GyNet < GyMin)) or isstep == 1 ) {    
+  if ((AcZ > -15000 and (AcNet < AcMin or GyNet < GyMin)) or isstep ) {    
   //if new step is detected to start, or if step is expected. AcZ value so it doesnt trigger when face up
     isstep = 1;
-    if (lastisstep == 0) {                                  //if new step is expected, start timer
+    if (!lastisstep) {                                  //if new step is expected, start timer
       steptimer = millis();
     }
     if (GyNet > GyNetMax) {

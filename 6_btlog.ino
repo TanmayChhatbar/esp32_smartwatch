@@ -1,6 +1,13 @@
+/*
+  Commands related to bluetooth logging
+*/
+
 #ifdef bluetoothLogging
 
 int inbuffer;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void btsetup() {
   ESP_BT.begin("ESP32_DataLog"); //Name of your Bluetooth Signal
@@ -31,33 +38,36 @@ void sendBT() {
 
 void printinBT() {
   { //acceleration values
+    ESP_BT.print("A:");
     ESP_BT.print(AcX);
     ESP_BT.print(",");
     ESP_BT.print(AcY);
     ESP_BT.print(",");
     ESP_BT.print(AcZ);
-    ESP_BT.print(", ");
+    ESP_BT.print(",");
     ESP_BT.print(AcNet);
     ESP_BT.print(",");
   }
   { //gyro values
+    ESP_BT.print("G:");
     ESP_BT.print(GyX);
     ESP_BT.print(",");
     ESP_BT.print(GyY);
     ESP_BT.print(",");
-    ESP_BT.println(GyZ);
+    ESP_BT.print(GyZ);
+    ESP_BT.print(",");
   }
   //  { //steps
   //    ESP_BT.print(stepstoday);
   //    ESP_BT.print(",");
   //  }
   { //step change
+    ESP_BT.print("S:");
     if (laststepstoday != stepstoday)
       ESP_BT.print("1");
     else ESP_BT.print("0");
     ESP_BT.print(",");
   }
-
   ESP_BT.println();
 }
 
@@ -69,7 +79,7 @@ void TFTPrintBT() {
   tft.setTextPadding(20);
 
   tft.drawString("BT Status", 10, 10, 4);
-  if (btstatus != lastbtstatus or tftupdate == 1) {
+  if (btstatus != lastbtstatus or tftupdate) {
     lastbtstatus = btstatus;
     switch (btstatus) {
       case 0:
