@@ -21,8 +21,8 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 		define 	battery sizes
 
 # Changelog
-### v0.3 (Current)
-	
+### v0.32 (Current)
+	Minor fixes
 	Better comments
 	Rewrote walking code (around 90% accuracy)
 	n-step Debounce for movement
