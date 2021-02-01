@@ -4,7 +4,7 @@ DIY smartwatch. Features time(from wifi), step count, calorie count(experimental
 
 I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
 
-# Variables you might want to set
+## Variables you might want to set
 	in Smartwatch.ino
 		define 	bluetoothLogging
 			DebuggingScreens
