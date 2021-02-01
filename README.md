@@ -19,12 +19,11 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 		define 	screen colors
 	in battery.ino
 		define 	battery sizes
-		
-	
 
 # Changelog
-v0.3 (Current)
-
+### v0.3 (Current)
+	
+	Better comments
 	Rewrote walking code (around 90% accuracy)
 	n-step Debounce for movement
 	

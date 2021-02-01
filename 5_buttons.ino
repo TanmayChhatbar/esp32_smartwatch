@@ -43,8 +43,8 @@ void toggleButton1() {
 void toggleButton2() {
   if (digitalRead(BUTTON2PIN) == LOW) {
     timer2 = millis();
+    Serial.println("button2");
     while (digitalRead(BUTTON2PIN) == LOW) {
-      Serial.println("button2");
       if (millis() - timer2 > 1000) {
         gotosleep(2);
       }

@@ -1,4 +1,3 @@
-u
 /*
 //fallback
   void isWalking() {

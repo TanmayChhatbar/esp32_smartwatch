@@ -50,13 +50,13 @@ void isWalking() {
     }
     if (GyNet > GyNetMax) {                                   //find maxima, dont increment step until maxima is found
       GyNetMax = GyNet;
-      Serial.println(GyNetMax);
+//      Serial.println(GyNetMax);                             //print new GyNetMax
     }
     stepDuration = millis() - steptimer;                      //stepDuration to track time spent moving
 
     if (stepDuration < maxStepTime) {                         //if max time per step hasnt elapsed
       if ((GyNetMax > GyMax and GyNetMax > GyNet and GyNetMax < GyNetMaxMax) and stepDuration > minStepTime) {
-        Serial.println("Step");
+        Serial.println("Step calc start");
         //if within acceptable step duration, gynet exceeds gymax, and gynet is maximum it has been for this step
         //ASSUME STEP
         if (!isMoving) {                                      //if not sure if moving, check if 10 steps made in 10 seconds
@@ -69,7 +69,7 @@ void isWalking() {
             movingSteps = 0;
             stepstoday += stepsThreshold;
             millispent += (millis() - movingTimer);
-            Serial.println("all steps counted");
+            Serial.println("threshold crossed, all steps counted. will count as normal now");
             isMoving = 1;
             lastisMoving = isMoving;
           }
@@ -79,7 +79,7 @@ void isWalking() {
           }
         }
         else {                                                //if already certain of movement, increment steps as usual
-          Serial.println("step counted");
+          Serial.println("new step counted");
           calorieCount(0);
           millispent += 2 * stepDuration;
           stepstoday++;
@@ -101,7 +101,7 @@ void isWalking() {
 void notMoving() {
   if (isMoving) {                                         //and if last known state was moving
     if (lastisMoving) {                                   //start timer at first loop of here
-      Serial.println("notmovingtimer");
+      Serial.println("not moving timer started");
       movingTimer = millis();
     }
     lastisMoving = 0;
