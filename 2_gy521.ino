@@ -18,7 +18,7 @@ void read_Accelerometer() {
   Wire.beginTransmission(MPU);
   Wire.write(0x3B);
   Wire.endTransmission(false);
-  Wire.requestFrom(MPU, 14, true);
+  Wire.requestFrom((uint16_t)MPU, (uint8_t)14, true);     //declared types to prevent warning
   AcX = Wire.read() << 8 | Wire.read();
   AcY = Wire.read() << 8 | Wire.read();
   AcZ = Wire.read() << 8 | Wire.read();
