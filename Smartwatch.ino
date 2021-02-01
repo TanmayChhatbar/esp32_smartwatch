@@ -4,20 +4,20 @@
    Partition scheme (Huge App) || (Minimal SPIFFS) || [basically any with >=1.5MB App]
    OTA hasnt yet been inculcated because WiFi is switched off after fetching time to conserve battery life
    
-   v0.21
-   Screen no.        Task                       Type
+   v0.3
+   Screen no.        Task                       Type        Current state
    -1                Off                        Off
 
-    1                 Current Time              Basic
-    2                 Steps count               Basic
-    3                 Calories burned           Basic
+    1                 Current Time              Basic       Works
+    2                 Steps count               Basic       87%-92% accurate, compared to "Step Tracker & Pedometer" app, around 105%-110% of walking time registered
+    3                 Calories burned           Basic       experimental, not reliable (30%-35% of expected value from same app)
 
-    4                 Bluetooth logging status  Debug
-    5                 Accel values              Debug
-    6                 Gyro values               Debug
+    4                 Bluetooth logging status  Debug       Works
+    5                 Accel values              Debug       Works
+    6                 Gyro values               Debug       Works
 
 
-    To do:
+    TODO:
     Running code test
     Steps counter threshold - check variable stepsThreshold
     OTA - keep WiFi on for a while after boot
@@ -84,5 +84,5 @@ void loop() {
   //    loopscount();   //uncomment to count frequency of loop
   updatescreen();
   read_Accelerometer();
-  toggleButton2;
+  toggleButton2();
 }

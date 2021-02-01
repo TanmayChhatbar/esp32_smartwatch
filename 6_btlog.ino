@@ -49,12 +49,16 @@ void printinBT() {
     ESP_BT.print(",");
   }
   { //gyro values
-    ESP_BT.print("G:");
+    ESP_BT.print("  G:");
     ESP_BT.print(GyX);
     ESP_BT.print(",");
     ESP_BT.print(GyY);
     ESP_BT.print(",");
     ESP_BT.print(GyZ);
+    ESP_BT.print(",");
+    ESP_BT.print(GyNet);
+    ESP_BT.print(",");
+    ESP_BT.print(GyNetMax);
     ESP_BT.print(",");
   }
   //  { //steps
@@ -62,7 +66,7 @@ void printinBT() {
   //    ESP_BT.print(",");
   //  }
   { //step change
-    ESP_BT.print("S:");
+    ESP_BT.print("  S:");
     if (laststepstoday != stepstoday)
       ESP_BT.print("1");
     else ESP_BT.print("0");

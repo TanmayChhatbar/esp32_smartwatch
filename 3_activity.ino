@@ -16,21 +16,104 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //walking
-#define GyMin 8000   //for detection of step, before test val 13000
-#define GyMax 18500   //needs to be variable based on GyNet value, so that walking, jogging, running can be logged, before test val 20000
-
+#define GyMin 7000          //for detection of step, before test val 13000
+#define GyMax 12000         //needs to be variable based on GyNet value, so that walking, jogging, running can be logged, before test val 20000
+#define GyNetMaxMax (GyMax * 2)   //if GyNetMax exceeds this value, step wont be counted
 //running
-#define AcMin 20000   //for detection of step
-#define AcMax 30000   //needs to be variable based on GyNet value, so that walking, jogging, running can be logged
+#define AcMin 20000         //for detection of step
+#define AcMax 30000         //needs to be variable based on GyNet value, so that walking, jogging, running can be logged
 
-#define maxStepTime 500 //milliseconds, prev 1000
-#define minStepTime 125     //prev 300
+#define maxStepTime 600     //milliseconds, prev 1000
+#define minStepTime 300     //prev 300
 
-#define stepsThreshold 10 //TODO
-#define stepsThresholdTime (stepsThreshold*1.5) * maxStepTime * 2
+unsigned int steptimer, stepDuration, movingTimer, movingSteps;            //timer is overall, duration is millis - timer
+bool isstep, lastisstep, isrunstep, lastisrunstep;
 
-unsigned int steptimer, stepDuration;     //timer is overall, duration is millis - timer
-bool isstep, lastisstep, isrunstep, lastisrunstep; //has started calc for a step
+
+//variables moving start counter only after threshold number of steps have taken place, so normal movement doesnt accidentally count as moving
+
+#define stepsThreshold 10 //10 steps in threshold time to get into moving mode
+#define stepsThresholdTime (stepsThreshold * maxStepTime * 2)   // 12 seconds, to get into moving mode
+#define stepsThresholdTimeout (stepsThreshold * maxStepTime * 3)// 18 seconds, to get out of moving mode
+
+bool isMoving, lastisMoving;  //has started calc for a step
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void isWalking() {
+  if (!isrunstep and ((AcZ > -15000 and  GyNet < GyMin) or isstep)) {    //if not running, and new step is detected to start, or if step is expected.
+    //AcZ value so it doesnt trigger when face up
+    isstep = 1;
+    if (!lastisstep) {                                        //if new step is expected, start timer
+      steptimer = millis();
+    }
+    if (GyNet > GyNetMax) {                                   //find maxima, dont increment step until maxima is found
+      GyNetMax = GyNet;
+      Serial.println(GyNetMax);
+    }
+    stepDuration = millis() - steptimer;                      //stepDuration to track time spent moving
+
+    if (stepDuration < maxStepTime) {                         //if max time per step hasnt elapsed
+      if ((GyNetMax > GyMax and GyNetMax > GyNet and GyNetMax < GyNetMaxMax) and stepDuration > minStepTime) {
+        Serial.println("Step");
+        //if within acceptable step duration, gynet exceeds gymax, and gynet is maximum it has been for this step
+        //ASSUME STEP
+        if (!isMoving) {                                      //if not sure if moving, check if 10 steps made in 10 seconds
+          if (movingSteps == 0) {                             //start timer at first movingStep
+            Serial.println("started moving timer");
+            movingTimer = millis();
+          }
+          movingSteps++;
+          if (movingSteps >= stepsThreshold) {                //if moving steps greater than threshold, count them all, and now are certain of movement
+            movingSteps = 0;
+            stepstoday += stepsThreshold;
+            millispent += (millis() - movingTimer);
+            Serial.println("all steps counted");
+            isMoving = 1;
+            lastisMoving = isMoving;
+          }
+          else if (millis() - movingTimer > stepsThresholdTimeout) //if timed out, reset movingsteps
+          {
+            movingSteps = 0;
+          }
+        }
+        else {                                                //if already certain of movement, increment steps as usual
+          Serial.println("step counted");
+          calorieCount(0);
+          millispent += 2 * stepDuration;
+          stepstoday++;
+        }
+        isstep = 0;                                           //incremented, wait for
+        GyNetMax = 0;
+      }
+    }
+    else {                                                    //if max time for the step has elapsed, ignore current potential step
+      isstep = 0;
+    }
+    lastisstep = isstep;
+  }
+  else {
+    notMoving();
+  }
+}
+
+void notMoving() {
+  if (isMoving) {                                         //and if last known state was moving
+    if (lastisMoving) {                                   //start timer at first loop of here
+      Serial.println("notmovingtimer");
+      movingTimer = millis();
+    }
+    lastisMoving = 0;
+    if (millis() - movingTimer > stepsThresholdTimeout) {
+      Serial.println("not moving at all");
+      isMoving = 0;
+      movingSteps = 0;
+    }
+  }
+  GyNetMax = 0;
+  isstep = 0;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,13 +134,10 @@ void isRunning() {
     if (stepDuration < maxStepTime) {                       //if max time per step hasnt elapsed
       if ((AcNet > AcMax and AcNet < AcNetMax) and stepDuration > minStepTime ) {
         //if between max and min step times, gynet exceeds gymax, increment steps
-        if (AcNetMax < 20000)
-          calburntoday += .066 * stepDuration / 1000;
-        else if (AcNetMax < 30000)
-          calburntoday += .183 * stepDuration / 1000;
-        else calburntoday += .333 * stepDuration / 1000;
+        calorieCount(1);
 
         millispent += 2 * stepDuration;                       //assuming both half-steps take the same time
+
         stepstoday++;
         isrunstep = 0;                                         //incremented, wait for
       }
@@ -75,42 +155,22 @@ void isRunning() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void isWalking() {
-  if (!isrunstep and ((AcZ > -15000 and  GyNet < GyMin) or isstep )) {
-    //if new step is detected to start, or if step is expected. AcZ value so it doesnt trigger when face up
-    isstep = 1;
-    if (!lastisstep) {
-      //if new step is expected, start timer
-      steptimer = millis();
-    }
-    if (GyNet > GyNetMax) {
-      GyNetMax = GyNet;
-    }
-    stepDuration = millis() - steptimer;
-
-    if (stepDuration < maxStepTime) {                       //if max time per step hasnt elapsed
-      if ((GyNet > GyMax and GyNet < GyNetMax) and stepDuration > minStepTime ) {
-        //if between max and min step times, gynet exceeds gymax, increment steps
-
-        Serial.println(GyNetMax);
-        if (GyNetMax < 8000)
-          calburntoday += .04 * stepDuration / 1000;
-        else if (GyNetMax < 20000)
-          calburntoday += .066 * stepDuration / 1000;
-        else if (GyNetMax < 30000)
-          calburntoday += .183 * stepDuration / 1000;
-        else calburntoday += .333 * stepDuration / 1000;
-        millispent += stepDuration;
-        stepstoday++;
-        isstep = 0;                                         //incremented, wait for
-      }
-    }
-    else {
-      isstep = 0;
-      steptimer = millis();
-      GyNetMax = 0;
-    }
-    lastisstep = isstep;
+void calorieCount(bool walkrun) {     //0 is walk, 1 is run
+  if (walkrun) {
+    if (GyNetMax < 8000)
+      calburntoday += .04 * stepDuration * 2 / 1000;
+    else if (GyNetMax < 20000)
+      calburntoday += .066 * stepDuration * 2 / 1000;
+    else if (GyNetMax < 30000)
+      calburntoday += .183 * stepDuration * 2 / 1000;
+    else calburntoday += .333 * stepDuration * 2 / 1000;
+  }
+  else {
+    if (AcNetMax < 20000)
+      calburntoday += .066 * stepDuration / 1000;
+    else if (AcNetMax < 30000)
+      calburntoday += .183 * stepDuration / 1000;
+    else calburntoday += .333 * stepDuration / 1000;
   }
 }
 
