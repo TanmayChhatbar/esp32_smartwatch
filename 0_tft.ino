@@ -32,11 +32,11 @@ void updatescreen() {
     tft.fillScreen(backgroundColor);        //if the screen needs to be changed, write the screen all black
     tft.setTextColor(textColor, backgroundColor);
     active = 1;
-    activetimer = millis();
   }
   if (tftfullupdate) {
     tftfullupdate = 0;
     tftupdate = 1;
+    activetimer = millis();
   }
   switch (screen) {                   //update display loop
     case -1:                          //-1 indicates display off, dont refresh screen
