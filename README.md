@@ -48,5 +48,6 @@ Changelog being maintained since v0.2
 
 
 # Credit
-	Must credit all those who have written those extensive libraries as part of the effort in this project. Without them, I couldn't have reached so far.
+	Must credit all those who have written those extensive libraries as part of the effort in this project.
+	Without them, I couldn't have reached so far.
 
