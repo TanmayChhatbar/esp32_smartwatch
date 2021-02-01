@@ -6,6 +6,7 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 
 # Changelog
 v0.22 (Current)
+	
 	Better screen switching
 	
 	Fix in walking time
@@ -15,6 +16,7 @@ v0.22 (Current)
 	Code cleanup
 		
 v0.21
+	
 	Easy toggle for bluetooth logging and debugging screens
 	
 	Automatic screen detection
