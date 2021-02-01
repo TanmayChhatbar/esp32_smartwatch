@@ -12,7 +12,7 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 		define 	credentials
 			gmtOffset_sec
 			daylightOffset_sec
-# Variables you can play around with
+### Variables you can play around with
 	in tft.ino
 		define screen colors
 	in battery.ino
