@@ -9,8 +9,9 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 
 # Features 
 	Time (from WiFi)
-	Step count
+	Steps count
 	Calorie count (experimental so far) 
+	
 # User Setup
 ### Variables you will want to set
 	in Smartwatch.ino
