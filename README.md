@@ -21,7 +21,12 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 		define 	battery sizes
 
 # Changelog
-### v0.32 (Current)
+
+### v0.33 (Current)
+	Walking bug fix
+	Better comments
+
+v0.32
 	Minor fixes
 	Better comments
 	Rewrote walking code (around 90% accuracy)
