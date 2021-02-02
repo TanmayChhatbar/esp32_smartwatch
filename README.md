@@ -38,6 +38,7 @@ I'm not a professional at programming, and this project is just an effort to ref
 	Added media to readme.md
 	
 v0.33
+
 	Walking bug fix
 	Better comments
 
