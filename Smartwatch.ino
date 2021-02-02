@@ -19,7 +19,7 @@
 
     TODO:
     Running code test
-    Steps counter threshold - check variable stepsThreshold
+    Steps counter threshold - check variable stepsThreshold - done
     OTA - keep WiFi on for a while after boot
     Check if battery is charging
     Music control
@@ -47,11 +47,13 @@ struct tm timeinfo;
 int lasthour = 0, lastsec = 0;
 
 //Accelerometer related
-//screen 2 - steps
 const int MPU = 0x68;
+
+//Variables stored in RTC memory
 RTC_DATA_ATTR int bootCount = 0, stepstoday = 0, laststepstoday = 0, wakereason = -1;
 RTC_DATA_ATTR float calburntoday = 0, lastcalburntoday;
 RTC_DATA_ATTR uint32_t millispent;
+
 //Battery related
 float vBat;
 int active = 0;
