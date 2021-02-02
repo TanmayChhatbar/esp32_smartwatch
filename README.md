@@ -25,7 +25,14 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 
 # Changelog
 
-### v0.33 (Current)
+### v0.4 (Current)
+	
+	Fix for font size when steps go into 5 digits
+	Better movement timeout
+	Optimized range of values for walking
+	Added media to readme.md
+	
+v0.33
 	Walking bug fix
 	Better comments
 
@@ -67,5 +74,6 @@ Changelog being maintained since v0.2
 # Credit
 	Must credit all those who have written those extensive libraries as part of the effort in this project.
 	Without them, I couldn't have reached so far.
+
 
 

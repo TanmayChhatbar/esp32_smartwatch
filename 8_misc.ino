@@ -54,3 +54,20 @@ void TFTPrintError() {
   errormsg += " not defined";
   tft.drawString("Screen not defined", 0, 10, 4);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+
+  int serialPrintLocalTime() {          //serial print current time, returns 1 if error
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+    TFTPrintTime();
+    syncWiFi();
+    return 1;
+  }
+  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  return 0;
+  }
+
+*/

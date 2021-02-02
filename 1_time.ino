@@ -3,9 +3,9 @@
 */
 
 #include <credentials.h>    //I recommend making a '*sketchbook_location*/libraries/credentials/credentials.h' so you can share your network details across all sketches with just one line
-
-//#define ssid "YOUR_SSID"
-//#define password "YOUR_PASSWORD"
+//OR manually
+//#define ssid *YOUR_SSID*
+//#define password *YOUR_PASSWORD*
 
 unsigned long timerWiFi = 0;
 
@@ -19,16 +19,17 @@ const int   daylightOffset_sec = 0;
 void syncWiFi() {       //connects to WiFi, and fetches time
 y:
   Serial.printf("Connecting to %s", ssid);
+
   tft.setTextDatum(TL_DATUM);
   tft.drawString("Connecting to ", 0, 0, 4);
   tft.drawString(ssid, 0, 30, 4);
+
   WiFi.begin(ssid, password);
   timerWiFi = millis();
   while (WiFi.status() != WL_CONNECTED) {
     delay(200);
     Serial.print(".");
-    if (millis() - timerWiFi > 10000)
-    {
+    if (millis() - timerWiFi > 10000) {
       goto y;
     }
   }
@@ -50,20 +51,6 @@ y:
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
   delay(50);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int serialPrintLocalTime() {          //serial print current time, returns 1 if error
-  if (!getLocalTime(&timeinfo)) {
-    Serial.println("Failed to obtain time");
-    TFTPrintTime();
-    syncWiFi();
-    return 1;
-  }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-  return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

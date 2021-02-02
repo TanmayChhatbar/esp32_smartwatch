@@ -36,10 +36,12 @@ void read_Accelerometer() {
   isActive();           //should watch switch itself off
   updateLast();         //update the 'last' values from accelerometer
 
-  if (((AcZ < -13500 and AcY > 600) and active) or screen >= 4)    //switch on the display if someone is looking at it
+  if (((AcZ < -13500 and AcY > 600) and active) or screen >= 4) {   //switch on the display if someone is looking at it
     backlight(1);
-  else if (!active or (AcZ > -13500 and AcY < 600))
+  }
+  else if (!active or (AcZ > -13500 and AcY < 600)) {
     backlight(0);
+  }
 
   //  isRunning();
   isWalking();
@@ -83,8 +85,9 @@ void printInSerial(char sel) {
     Serial.print("\tgY= "); Serial.print(GyY);
     Serial.print("\tgZ= "); Serial.print(GyZ);
   }
-  if (sel == 'a' or sel == 'g' or sel == 'b')
+  if (sel == 'a' or sel == 'g' or sel == 'b') {
     Serial.println();
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,10 +120,12 @@ void updateLast() {
 void accelAwake(bool wake) {      // if wake is 1, wake up, else sleep
   Wire.beginTransmission(MPU);
   Wire.write(0x6B);
-  if (wake)
+  if (wake) {
     Wire.write(0);
-  else
+  }
+  else {
     Wire.write(0x40);       //write b01000000 in register 6b
+  }
   Wire.endTransmission();
 }
 

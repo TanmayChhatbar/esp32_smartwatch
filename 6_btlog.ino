@@ -3,8 +3,12 @@
 */
 
 #ifdef bluetoothLogging
-
-int inbuffer;
+/*
+  M1 - 1 - Start accel/gyro values
+  M2 - 0 - Stop accel/gyro values
+  M3 - 2 - Start loop values
+  M4 - 3 - Stop loop values
+*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,14 +26,20 @@ void btsetup() {
 void sendBT() {
   if (ESP_BT.available()) { //Check if we receive anything from Bluetooth
     inbuffer = ESP_BT.read();
-    if (inbuffer > 47 and inbuffer < 50)
+    if (inbuffer > 47 and inbuffer < 53)
       incoming = inbuffer;
   }
-  //  Serial.println(btstatus);
-  if (incoming == 49) {
+  if (incoming == 49) {     //M1 - 1
     printinBT();
     btstatus = 1; //sending
   }
+  else if (incoming == 50) { //M3 - 2
+    btout = 1;
+  }
+  else if (incoming == 51) { //M4 - 3
+    btout = 0;
+  }
+
   else btstatus = 0;
 }
 
@@ -61,10 +71,6 @@ void printinBT() {
     ESP_BT.print(GyNetMax);
     ESP_BT.print(",");
   }
-  //  { //steps
-  //    ESP_BT.print(stepstoday);
-  //    ESP_BT.print(",");
-  //  }
   { //step change
     ESP_BT.print("  S:");
     if (laststepstoday != stepstoday)
@@ -72,6 +78,10 @@ void printinBT() {
     else ESP_BT.print("0");
     ESP_BT.print(",");
   }
+  //  { //steps
+  //    ESP_BT.print(stepstoday);
+  //    ESP_BT.print(",");
+  //  }
   ESP_BT.println();
 }
 
@@ -101,3 +111,10 @@ void TFTPrintBT() {
 }
 
 #endif
+
+void printout(String msg) {
+  Serial.println(msg);
+#ifdef bluetoothLogging
+  ESP_BT.println(msg);
+#endif
+}

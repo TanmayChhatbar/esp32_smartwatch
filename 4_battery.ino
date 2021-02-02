@@ -36,7 +36,7 @@ void batterycheck() {
 
 void batterydraw() {            //TODO
   vBat = analogRead(34) * 0.001772;
-  if (vBat < 3.3)                                                                            
+  if (vBat < 3.3)
     gotosleep(0);
   else if (vBat < 3.4)
     divdraw = 0;
@@ -51,7 +51,6 @@ void batterydraw() {            //TODO
   //  if (charging)
   //    color = TFT_GREEN;                           //test charging color change
   //  else
-  //    color = batteryColor;
   color = batteryColor;
 
   tft.drawRect(tlpointx, tlpointy, framewidth, totalheight, color);      //main frame

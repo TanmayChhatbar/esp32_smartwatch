@@ -2,8 +2,8 @@
 #ifdef bluetoothLogging
 #include "BluetoothSerial.h"  //Header File for Serial Bluetooth, will be added by default into Arduino
 BluetoothSerial ESP_BT;       //Object for Bluetooth
-int btstatus = 2, lastbtstatus = 10;
-int incoming;
+int btstatus = 2, lastbtstatus = 10, btout = 0;
+int incoming, inbuffer;
 #endif
 
 //set correct number of screens
