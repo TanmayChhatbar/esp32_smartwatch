@@ -27,6 +27,7 @@ I am nowhere near a pro at programming, and this project is just an effort to re
 	Better comments
 
 v0.32
+
 	Minor fixes
 	Better comments
 	Rewrote walking code (around 90% accuracy)
