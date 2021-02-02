@@ -2,7 +2,7 @@
 # [WIP]esp32_smartwatch
 DIY smartwatch.
 
-I am nowhere near a pro at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
+I'm not a professional at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
 
 ![83851rdyp8c61](https://user-images.githubusercontent.com/14368465/106637627-f688be80-65a8-11eb-9b04-b9190dd37171.jpg)
 ![qv8iawr2q8c61](https://user-images.githubusercontent.com/14368465/106637832-3059c500-65a9-11eb-8190-96edd26f87b8.gif)
