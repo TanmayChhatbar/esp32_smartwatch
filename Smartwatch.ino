@@ -4,14 +4,14 @@
    Partition scheme (Huge App) || (Minimal SPIFFS) || [basically any with >=1.5MB App]
    OTA hasnt yet been inculcated because WiFi is switched off after fetching time to conserve battery life
 
-   v0.4
+   v0.41
    Screen no.        Task                       Type        Current state
    -1                Off                        Off
 
     1                 Current Time              Basic       Works
-    2                 Steps count               Basic       92%-97% accurate while walking, compared to "Step Tracker & Pedometer" app, around 105%-110% of walking time registered
+    2                 Steps count               Basic       around 97% accurate while walking, compared to "Step Tracker & Pedometer" app, around 105%-110% of walking time registered
     3                 Calories burned           Basic       experimental, not reliable (30%-35% of expected value from same app)
-
+    
     4                 Bluetooth logging status  Debug       Works
     5                 Accel values              Debug       Works
     6                 Gyro values               Debug       Works

@@ -29,8 +29,11 @@ I'm not a professional at programming, and this project is just an effort to ref
 		define 	battery sizes
 
 # Changelog
+### v0.41 (Current)
 
-### v0.4 (Current)
+	Improved accuracy in measurement of steps, around 96-97%
+
+v0.4
 	
 	Fix for font size when steps go into 5 digits
 	Better movement timeout
@@ -80,6 +83,7 @@ Changelog being maintained since v0.2
 # Credit
 	Must credit all those who have written those extensive libraries as part of the effort in this project.
 	Without them, I couldn't have reached so far.
+
 
 
 

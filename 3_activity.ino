@@ -8,8 +8,7 @@
    brisk walking              4                 .066              7000-20000      -noisy-
    jogging                    11                .183              13000-30000     20000-30000
    sprinting                  20                .333              a               a
-
-
+   
 */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +88,9 @@ void isWalking() {
               isMoving = 1;
             }
             else if (millis() - movingTimer > stepsThresholdTimeout) //if timed out, reset movingsteps
-            {
+            {                                                         //TODO NEED TO SHIFT THIS CHECK
               movingSteps = 0;
+              printout("Movement start timeout.");
             }
           }
           else {                                                //if already certain of movement, increment steps as usual
@@ -119,23 +119,6 @@ void isWalking() {
       lastisMoving = 0;
     }
   }
-}
-
-void notMoving() {
-  if (isMoving) {                                         //and if last known state was moving
-    if (lastisMoving) {                                   //start timer at first loop of here
-      printout("Movement timeout timer started");
-      movingTimer = millis();
-    }
-    lastisMoving = 0;
-    if (millis() - movingTimer > stepsThresholdTimeout) {
-      printout("Movement timed out");
-      isMoving = 0;
-      movingSteps = 0;
-    }
-  }
-  isstep = 0;
-  GyNetMax = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +156,26 @@ void isRunning() {
     lastisrunstep = isrunstep;
   }
   lastsumAcXY = sumAcXY;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void notMoving() {
+  if (isMoving) {                                         //and if last known state was moving
+    if (lastisMoving) {                                   //start timer at first loop of here
+      printout("Movement timeout timer started");
+      movingTimer = millis();
+    }
+    lastisMoving = 0;
+    if (millis() - movingTimer > stepsThresholdTimeout) {
+      printout("Movement timed out");
+      isMoving = 0;
+      movingSteps = 0;
+    }
+  }
+  isstep = 0;
+  GyNetMax = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
