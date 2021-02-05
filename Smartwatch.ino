@@ -4,7 +4,7 @@
    Partition scheme (Huge App) || (Minimal SPIFFS) || [basically any with >=1.5MB App]
    OTA hasnt yet been inculcated because WiFi is switched off after fetching time to conserve battery life
 
-   v0.41
+   v0.45
    Screen no.        Task                       Type        Current state
    -1                Off                        Off
 
@@ -27,18 +27,18 @@
 */
 
 #include "librariesused.h"  //list of libraries used
-#include "tftdefinition.h"  //definition of T-Display onboard display and buttons
+#include "definition_tft.h"  //definition of T-Display onboard display and buttons
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //BT logging related
-#define bluetoothLogging      //comment to remove bluetooth logging, needs to be before featuredefinition.h
+#define bluetoothLogging      //comment to remove bluetooth logging, needs to be before definition_features.h
 
 //screens related
 #define basic_screens 3       //basic screens are those excluding debugging/logging screens
-#define DebuggingScreens      //commment to remove debugging screens, needs to be before featuredefinition.h
-#include"featuredefinition.h"
+#define DebuggingScreens      //commment to remove debugging screens, needs to be before definition_features.h
+#include "definition_features.h"
 int screen = 1, lastscreen = 1;
 
 //Time related

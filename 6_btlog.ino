@@ -1,14 +1,13 @@
 /*
   Commands related to bluetooth logging
-*/
-
-#ifdef bluetoothLogging
-/*
+  
   M1 - 1 - Start accel/gyro values
   M2 - 0 - Stop accel/gyro values
   M3 - 2 - Start loop values
   M4 - 3 - Stop loop values
 */
+
+#ifdef bluetoothLogging
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,10 +110,3 @@ void TFTPrintBT() {
 }
 
 #endif
-
-void printout(String msg) {
-  Serial.println(msg);
-#ifdef bluetoothLogging
-  ESP_BT.println(msg);
-#endif
-}

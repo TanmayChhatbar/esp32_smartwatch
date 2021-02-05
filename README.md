@@ -9,8 +9,8 @@ I'm not a professional at programming, and this project is just an effort to ref
 
 # Features 
 	Time (from WiFi)
-	Steps count
-	Calorie count (experimental so far) 
+	Steps count  	around 97% accuracy
+	Calorie count 	very experimental so far - <30% accurate
 	
 # User Setup
 ### Variables you will want to set
@@ -29,7 +29,10 @@ I'm not a professional at programming, and this project is just an effort to ref
 		define 	battery sizes
 
 # Changelog
-### v0.41 (Current)
+### v0.45 (Current)
+
+	Better ino grouping and naming
+v0.41
 
 	Improved accuracy in measurement of steps, around 96-97%
 
@@ -65,7 +68,7 @@ v0.21
 	Automatic screen detection	
 	Fix in walking
 
-Changelog being maintained since v0.2
+_Changelog being maintained since v0.2_
 
 # Libraries used
   	TFT_eSPI.h - https://github.com/Bodmer/TFT_eSPI
