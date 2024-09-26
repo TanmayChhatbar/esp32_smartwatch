@@ -4,8 +4,8 @@ DIY smartwatch.
 
 I'm not a professional at programming, and this project is just an effort to refine my skills at it. Do recommend changes and point out bugs! 
 
-![DIY Smartwatch](./diy_smartwatch.jpg)
-![DIY Smartwatch GIF](./diy_smartwatch_counting.gif)
+![DIY Smartwatch](./media/diy_smartwatch.jpg)
+![DIY Smartwatch GIF](./media/diy_smartwatch_counting.gif)
 
 # Features 
 	Time (from WiFi)
